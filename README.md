@@ -6,18 +6,6 @@
     <a href="https://packagist.org/packages/iescarro/codeigniter3-social"><img src="https://img.shields.io/packagist/l/iescarro/codeigniter3-social" alt="License"></a>
 </p>
 
-GOOGLE_CLIENT_ID=your-google-client-id
-GOOGLE_CLIENT_SECRET=your-google-client-secret
-GOOGLE_REDIRECT_URI=http://localhost:8000/auth/google/callback
-
-GITHUB_CLIENT_ID=your-github-client-id
-GITHUB_CLIENT_SECRET=your-github-client-secret
-GITHUB_REDIRECT_URI=http://localhost:8000/auth/github/callback
-
-FB_APP_ID=your-fb-app-id
-FB_APP_SECRET=your-fb-app-secret
-FB_CALLBACK_URL=http://localhost:8000/auth/facebook/callback
-
 # CodeIgniter3-Social
 
 A simple, minimal library for integrating Social Login (OAuth 2.0) into your CodeIgniter 3 projects. Easily enable login functionality for major platforms like Google, Facebook, and GitHub without managing complex API calls.
@@ -63,45 +51,25 @@ Option 2: Manual Installation
 ## 🔑 Configuration
 
 1. Register OAuth Apps
-
    Before use, you must register your application on each provider's developer console (e.g., Google Cloud Console, Meta for Developers, GitHub Developer Settings) to obtain a Client ID and Client Secret.
 
-2. Configure social.php
+2. Configure Environment Variables (.env)
+   For security and portability, all credentials must be stored in a .env file in your project root. This version utilizes the APP_URL variable to ensure consistency when deploying across different environments.
 
-   Create a file named social.php inside your application/config/ directory. Use this file to define the credentials and settings for each provider.
+Place the following configuration into your .env file, replacing the placeholder values with the credentials obtained from each provider's developer console.
 
-```php
-<?php
-defined('BASEPATH') OR exit('No direct script access allowed');
+```
+GOOGLE_CLIENT_ID=your-google-client-id
+GOOGLE_CLIENT_SECRET=your-google-client-secret
+GOOGLE_REDIRECT_URI=${APP_URL}/auth/google/callback
 
-$config['social'] = [
+GITHUB_CLIENT_ID=your-github-client-id
+GITHUB_CLIENT_SECRET=your-github-client-secret
+GITHUB_REDIRECT_URI=${APP_URL}/auth/github/callback
 
-    // --- Google Settings ---
-    'google' => [
-        'client_id'     => 'YOUR_GOOGLE_CLIENT_ID',
-        'client_secret' => 'YOUR_GOOGLE_CLIENT_SECRET',
-        'redirect_uri'  => base_url('auth/google/callback'),
-        'scope'         => ['email', 'profile'], // Permissions requested
-    ],
-
-    // --- GitHub Settings ---
-    'github' => [
-        'client_id'     => 'YOUR_GITHUB_CLIENT_ID',
-        'client_secret' => 'YOUR_GITHUB_CLIENT_SECRET',
-        'redirect_uri'  => base_url('auth/github/callback'),
-        'scope'         => ['user:email', 'read:user'],
-    ],
-
-    // --- Facebook Settings ---
-    'facebook' => [
-        'client_id'     => 'YOUR_FACEBOOK_APP_ID',
-        'client_secret' => 'YOUR_FACEBOOK_APP_SECRET',
-        'redirect_uri'  => base_url('auth/facebook/callback'),
-        'scope'         => ['email', 'public_profile'],
-    ],
-
-    // ... add other providers here
-];
+FB_APP_ID=your-fb-app-id
+FB_APP_SECRET=your-fb-app-secret
+FB_CALLBACK_URL=${APP_URL}/auth/facebook/callback
 ```
 
 3. Set Redirect URIs
