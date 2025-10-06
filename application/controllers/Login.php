@@ -54,12 +54,12 @@ class Login extends CI_Controller
     function google_callback()
     {
         $data['user'] = Social::driver('google')->user();
-        // var_dump($data['user']);
+        var_dump($data['user']);
     }
 
     function github_callback()
     {
         $data['user'] = Social::driver('github')->user();
-        // var_dump($data['user']);
+        var_dump($data['user']);
     }
 }
