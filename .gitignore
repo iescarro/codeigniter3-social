@@ -1,3 +1,15 @@
 vendor/
 temp/
 composer.lock
+
+application/config
+application/views/index.html
+application/views/errors
+application/views/welcome_message.php
+application/logs
+.env
+ignite
+public/index.php
+application/controllers/Migrate.php
+application/migrations/00010101000000_Create_users.php
+application/storage/database/development.sqlite3
