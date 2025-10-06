@@ -84,68 +84,42 @@ You will typically interact with the library from a central Auth Controller.
    Auto-load the library in application/config/autoload.php or load it in your controller's constructor:
 
 ```php
-$this->load->library('social'); 2. Auth Controller (application/controllers/Auth.php)
+$this->load->library('social');
 ```
 
-This controller handles the initiation (redirect) and the response (callback) for the OAuth flow.
+2. Login Controller (application/controllers/Login.php)
+   This controller handles the initiation (redirect) and the response (callback) for the OAuth flow.
 
 ```php
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class Auth extends CI_Controller {
-
-    public function __construct()
+class Login extends CI_Controller
+{
+    function __construct()
     {
         parent::__construct();
-        $this->load->library('social'); // Assumes library is named 'social'
-        $this->load->model('user_model'); // Your custom user handling model
+        $this->load->helper(['url', 'support']);
+        $this->load->library(['social']);
     }
 
-    /**
-     * Step 1: Redirects the user to the provider's authorization screen.
-     * @param string $provider The provider name (e.g., 'google', 'github')
-     */
-    public function social_redirect($provider)
+    function index()
     {
-        try {
-            $redirect_url = $this->social->get_auth_url($provider);
-            redirect($redirect_url);
-        } catch (Exception $e) {
-            // Handle error (e.g., provider not configured)
-            show_error($e->getMessage());
-        }
+        $data['google_login_url'] = Social::driver('google')->redirect();
+        $data['github_login_url'] = Social::driver('github')->redirect();
+        $this->load->view('social/login', $data);
     }
 
-    /**
-     * Step 2: Handles the callback from the provider after user authorization.
-     * @param string $provider The provider name (e.g., 'google', 'github')
-     */
-    public function social_callback($provider)
+    function google_callback()
     {
-        try {
-            // Get the user data from the provider (contains ID, name, email)
-            $social_user = $this->social->get_user_info($provider);
+        $data['user'] = Social::driver('google')->user();
+        // var_dump($data['user']);
+    }
 
-            // --- Your Authentication Logic ---
-            $user = $this->user_model->get_user_by_social_id($provider, $social_user->id);
-
-            if ($user) {
-                // User exists: Log them in
-                $this->session->set_userdata('user_id', $user->id);
-            } else {
-                // New user: Create account and log them in
-                $new_user_id = $this->user_model->create_social_user($provider, $social_user);
-                $this->session->set_userdata('user_id', $new_user_id);
-            }
-
-            redirect(base_url('dashboard'));
-
-        } catch (Exception $e) {
-            // Handle errors (e.g., user denied permission, invalid token)
-            $this->session->set_flashdata('error', 'Social login failed: ' . $e->getMessage());
-            redirect(base_url('login'));
-        }
+    function github_callback()
+    {
+        $data['user'] = Social::driver('github')->user();
+        // var_dump($data['user']);
     }
 }
 ```
