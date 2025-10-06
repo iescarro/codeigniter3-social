@@ -1,7 +1,7 @@
 <?php
 
-// define('ROOT_PATH', __DIR__ . '/../../..');
-define('ROOT_PATH', __DIR__ . '/temp');
+define('ROOT_PATH', __DIR__ . '/../../..');
+// define('ROOT_PATH', __DIR__ . '/temp');
 
 function copy_files($source, $target)
 {
@@ -28,10 +28,10 @@ function copy_files($source, $target)
 }
 
 $sourceDirs = [
-  __DIR__ . '/src/controllers',
-  __DIR__ . '/src/helpers',
-  __DIR__ . '/src/models',
-  __DIR__ . '/src/views/social',
+  __DIR__ . '/application/controllers',
+  __DIR__ . '/application/helpers',
+  __DIR__ . '/application/models',
+  __DIR__ . '/application/views/social',
 ];
 $targetDirs = [
   ROOT_PATH . '/application/controllers',

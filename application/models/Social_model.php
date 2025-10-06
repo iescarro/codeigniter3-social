@@ -35,48 +35,30 @@
  * @since	Version 1.0.0
  * @filesource
  */
-class Login extends CI_Controller
+defined('BASEPATH') or exit('No direct script access allowed');
+
+class Social_model extends CI_Model
 {
     function __construct()
     {
-        parent::__construct();
-        $this->load->helper(['url', 'support', 'social', 'date']);
-        $this->load->model('social_model');
-        $this->load->library(['social']);
+        $this->load->database();
     }
 
-    function index()
+    function create($user)
     {
-        $data['google_login_url'] = Social::driver('google')->redirect();
-        $data['github_login_url'] = Social::driver('github')->redirect();
-        $this->load->view('social/login', $data);
+        $this->db->set('created_at', now());
+        $this->db->insert('users', $user);
     }
 
-    function google_callback()
+    function read_by_google_id($google_id)
     {
-        $response = Social::driver('google')->user();
-        $user = $this->social_model->read_by_google_id($response->id);
-        if (!$user) {
-            $new_user = social_to_google_user($response);
-            $this->social_model->create($new_user);
-            $user = $this->social_model->read_by_google_id($response->id);
-            print_pre($user);
-        } else {
-            print_pre($user);
-        }
+        $this->db->where('google_id', $google_id);
+        return $this->db->get('users')->row();
     }
 
-    function github_callback()
+    function read_by_github_id($github_id)
     {
-        $response = Social::driver('github')->user();
-        $user = $this->social_model->read_by_github_id($response->id);
-        if (!$user) {
-            $new_user = social_to_github_user($response);
-            $this->social_model->create($new_user);
-            $user = $this->social_model->read_by_github_id($response->id);
-            print_pre($user);
-        } else {
-            print_pre($user);
-        }
+        $this->db->where('github_id', $github_id);
+        return $this->db->get('users')->row();
     }
 }

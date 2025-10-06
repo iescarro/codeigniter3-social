@@ -10,10 +10,10 @@ class Social
     {
         if ($driver == 'google') {
             return new Social_Google();
-        } elseif ($driver == 'facebook') {
-            return new Social_Facebook();
         } else if ($driver == 'github') {
             return new Social_Github();
+            // } elseif ($driver == 'facebook') {
+            //     return new Social_Facebook();
         } else {
             throw new Exception("Driver not supported");
         }
@@ -56,6 +56,7 @@ class Social_Google extends Social
     function user()
     {
         $token = $this->client->fetchAccessTokenWithAuthCode($_GET['code']);
+        // print_pre($token);
         $this->client->setAccessToken($token);
 
         // Store the access token in the session for future use
@@ -113,7 +114,6 @@ class Social_Github extends Social
 
     function user()
     {
-
         // 1. Verify CSRF State
         if (!isset($_GET['state']) || $_GET['state'] !== $_SESSION['oauth_state']) {
             die("Error: Invalid state parameter. Possible CSRF attack.");

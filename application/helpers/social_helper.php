@@ -35,48 +35,20 @@
  * @since	Version 1.0.0
  * @filesource
  */
-class Login extends CI_Controller
+function social_to_google_user($user)
 {
-    function __construct()
-    {
-        parent::__construct();
-        $this->load->helper(['url', 'support', 'social', 'date']);
-        $this->load->model('social_model');
-        $this->load->library(['social']);
-    }
+    return array(
+        'google_id' => $user->id,
+        'name' => $user->name,
+        'email' => $user->email,
+    );
+}
 
-    function index()
-    {
-        $data['google_login_url'] = Social::driver('google')->redirect();
-        $data['github_login_url'] = Social::driver('github')->redirect();
-        $this->load->view('social/login', $data);
-    }
-
-    function google_callback()
-    {
-        $response = Social::driver('google')->user();
-        $user = $this->social_model->read_by_google_id($response->id);
-        if (!$user) {
-            $new_user = social_to_google_user($response);
-            $this->social_model->create($new_user);
-            $user = $this->social_model->read_by_google_id($response->id);
-            print_pre($user);
-        } else {
-            print_pre($user);
-        }
-    }
-
-    function github_callback()
-    {
-        $response = Social::driver('github')->user();
-        $user = $this->social_model->read_by_github_id($response->id);
-        if (!$user) {
-            $new_user = social_to_github_user($response);
-            $this->social_model->create($new_user);
-            $user = $this->social_model->read_by_github_id($response->id);
-            print_pre($user);
-        } else {
-            print_pre($user);
-        }
-    }
+function social_to_github_user($user)
+{
+    return array(
+        'github_id' => $user->id,
+        'name' => $user->name,
+        'email' => $user->email,
+    );
 }
