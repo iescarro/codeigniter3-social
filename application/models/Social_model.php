@@ -48,6 +48,7 @@ class Social_model extends CI_Model
     {
         $this->db->set('created_at', now());
         $this->db->insert('users', $user);
+        return $this->db->insert_id();
     }
 
     function read_by_google_id($google_id)
