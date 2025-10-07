@@ -80,14 +80,22 @@ FB_CALLBACK_URL=${APP_URL}/auth/facebook/callback
 
 You will typically interact with the library from a central Auth Controller.
 
-1. Load the Library
+1. Configure Routes (application/config/routes.php)
+   The callback URLs must be mapped to your controller functions:
+
+```php
+$route['auth/google/callback'] = 'login/google_callback';
+$route['auth/github/callback'] = 'login/github_callback';
+```
+
+2. Load the Library
    Auto-load the library in application/config/autoload.php or load it in your controller's constructor:
 
 ```php
 $this->load->library('social');
 ```
 
-2. Login Controller (application/controllers/Login.php)
+3. Login Controller (application/controllers/Login.php)
    This controller handles the initiation (redirect) and the response (callback) for the OAuth flow.
 
 ```php
