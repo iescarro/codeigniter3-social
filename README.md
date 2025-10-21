@@ -6,7 +6,7 @@
     <a href="https://packagist.org/packages/iescarro/codeigniter3-social"><img src="https://img.shields.io/packagist/l/iescarro/codeigniter3-social" alt="License"></a>
 </p>
 
-# CodeIgniter3-Social
+# CodeIgniter 3 Social Login (OAuth 2.0) Library
 
 A simple, minimal library for integrating Social Login (OAuth 2.0) into your CodeIgniter 3 projects. Easily enable login functionality for major platforms like Google, Facebook, and GitHub without managing complex API calls.
 
