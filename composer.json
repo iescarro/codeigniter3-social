@@ -2,19 +2,24 @@
   "name": "iescarro/codeigniter3-social",
   "description": "Social Authentication for CodeIgniter 3",
   "license": "MIT",
+  "type": "library",
   "autoload": {
     "psr-4": {
-      "CodeIgniter3\\Auth\\": "src",
-      "CodeIgniter3\\Auth\\Commands\\": "src/commands"
-    }
+      "CodeIgniter3\\Auth\\": "src/",
+      "CodeIgniter3\\Auth\\Commands\\": "src/commands/"
+    },
+    "files": [
+      "src/helpers.php"
+    ]
   },
   "authors": [
     {
-      "name": "Ian",
+      "name": "Ian Escarro",
       "email": "ian.escarro@gmail.com"
     }
   ],
   "require": {
+    "php": ">=8.1",
     "symfony/filesystem": "^7.1",
     "google/apiclient": "^2.18"
   },
