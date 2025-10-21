@@ -30,11 +30,6 @@ class Social_Google extends Social
 
     public function __construct()
     {
-        $this->init();
-    }
-
-    function init()
-    {
         // Initialize the Google Client
         $this->client = new Google\Client();
         $this->client->setClientId(GOOGLE_CLIENT_ID);

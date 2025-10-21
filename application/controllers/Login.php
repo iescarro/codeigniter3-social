@@ -37,6 +37,8 @@
  */
 class Login extends CI_Controller
 {
+    var $social_model;
+
     function __construct()
     {
         parent::__construct();
@@ -55,13 +57,18 @@ class Login extends CI_Controller
     function google_callback()
     {
         $response = Social::driver('google')->user();
-        $user = $this->social_model->read_by_google_id($response->id);
+        $google_id = $response->id;
+        $email = $response->email;
+        $user = $this->social_model->read_by_google_id($google_id, $email);
         if (!$user) {
             $new_user = social_to_google_user($response);
-            $this->social_model->create($new_user);
-            $user = $this->social_model->read_by_google_id($response->id);
+            $user_id = $this->social_model->create($new_user);
+
+            // Check if user created successfully.
+            $user = $this->social_model->read_by_google_id($google_id, $email);
             print_pre($user);
         } else {
+            $this->social_model->update(array('google_id' => $google_id), $user->id);
             print_pre($user);
         }
     }
@@ -69,13 +76,18 @@ class Login extends CI_Controller
     function github_callback()
     {
         $response = Social::driver('github')->user();
-        $user = $this->social_model->read_by_github_id($response->id);
+        $github_id = $response->id;
+        $email = $response->email;
+        $user = $this->social_model->read_by_github_id($github_id, $email);
         if (!$user) {
             $new_user = social_to_github_user($response);
-            $this->social_model->create($new_user);
-            $user = $this->social_model->read_by_github_id($response->id);
+            $user_id = $this->social_model->create($new_user);
+
+            // Check if user created successfully.
+            $user = $this->social_model->read_by_github_id($github_id, $email);
             print_pre($user);
         } else {
+            $this->social_model->update(array('github_id' => $github_id), $user->id);
             print_pre($user);
         }
     }

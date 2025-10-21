@@ -51,15 +51,23 @@ class Social_model extends CI_Model
         return $this->db->insert_id();
     }
 
-    function read_by_google_id($google_id)
+    function read_by_google_id($google_id, $email)
     {
+        $this->db->or_where('email', $email);
         $this->db->where('google_id', $google_id);
         return $this->db->get('users')->row();
     }
 
-    function read_by_github_id($github_id)
+    function read_by_github_id($github_id, $email)
     {
+        $this->db->or_where('email', $email);
         $this->db->where('github_id', $github_id);
         return $this->db->get('users')->row();
+    }
+
+    function update($user, $id)
+    {
+        $this->db->update('users', $user, array('id' => $id));
+        return $this->db->affected_rows();
     }
 }
